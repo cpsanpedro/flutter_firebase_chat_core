@@ -88,7 +88,7 @@ class _RoomsPageState extends State<RoomsPage> {
               ),
             )
           : StreamBuilder<List<types.Room>>(
-              stream: FirebaseChatCore.instance.rooms(),
+              stream: FirebaseChatCore.instance.rooms('id1'),
               initialData: const [],
               builder: (context, snapshot) {
                 if (!snapshot.hasData || snapshot.data!.isEmpty) {

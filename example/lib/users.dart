@@ -80,7 +80,7 @@ class UsersPage extends StatelessWidget {
 
   void _handlePressed(types.User otherUser, BuildContext context) async {
     final navigator = Navigator.of(context);
-    final room = await FirebaseChatCore.instance.createRoom(otherUser);
+    final room = await FirebaseChatCore.instance.createRoom('id1', otherUser);
 
     navigator.pop();
     await navigator.push(

@@ -36,7 +36,7 @@ class _ChatPageState extends State<ChatPage> {
         ),
         body: StreamBuilder<types.Room>(
           initialData: widget.room,
-          stream: FirebaseChatCore.instance.room(widget.room.id),
+          stream: FirebaseChatCore.instance.room(widget.room.id, 'id1'),
           builder: (context, snapshot) => StreamBuilder<List<types.Message>>(
             initialData: const [],
             stream: FirebaseChatCore.instance.messages(snapshot.data!),
@@ -121,7 +121,7 @@ class _ChatPageState extends State<ChatPage> {
           uri: uri,
         );
 
-        FirebaseChatCore.instance.sendMessage(message, widget.room.id);
+        FirebaseChatCore.instance.sendMessage('id1', message, widget.room.id);
         _setAttachmentUploading(false);
       } finally {
         _setAttachmentUploading(false);
@@ -158,6 +158,7 @@ class _ChatPageState extends State<ChatPage> {
         );
 
         FirebaseChatCore.instance.sendMessage(
+          'id1',
           message,
           widget.room.id,
         );
@@ -176,6 +177,7 @@ class _ChatPageState extends State<ChatPage> {
         try {
           final updatedMessage = message.copyWith(isLoading: true);
           FirebaseChatCore.instance.updateMessage(
+            'id1',
             updatedMessage,
             widget.room.id,
           );
@@ -193,6 +195,7 @@ class _ChatPageState extends State<ChatPage> {
         } finally {
           final updatedMessage = message.copyWith(isLoading: false);
           FirebaseChatCore.instance.updateMessage(
+            'id1',
             updatedMessage,
             widget.room.id,
           );
@@ -209,11 +212,13 @@ class _ChatPageState extends State<ChatPage> {
   ) {
     final updatedMessage = message.copyWith(previewData: previewData);
 
-    FirebaseChatCore.instance.updateMessage(updatedMessage, widget.room.id);
+    FirebaseChatCore.instance
+        .updateMessage('id1', updatedMessage, widget.room.id);
   }
 
   void _handleSendPressed(types.PartialText message) {
     FirebaseChatCore.instance.sendMessage(
+      'id1',
       message,
       widget.room.id,
     );
