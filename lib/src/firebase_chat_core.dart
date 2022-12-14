@@ -327,8 +327,9 @@ class FirebaseChatCore {
   void sendMessage(
     String currentUserId,
     dynamic partialMessage,
-    String roomId,
-  ) async {
+    String roomId, {
+    types.Message? repliedMessage,
+  }) async {
     types.Message? message;
 
     if (partialMessage is types.PartialCustom) {
@@ -363,6 +364,11 @@ class FirebaseChatCore {
       messageMap['authorId'] = currentUserId;
       messageMap['createdAt'] = FieldValue.serverTimestamp();
       messageMap['updatedAt'] = FieldValue.serverTimestamp();
+
+      if (repliedMessage != null) {
+        // final textMessage = repliedMessage as types.TextMessage;
+        messageMap['repliedMessage'] = repliedMessage.toJson();
+      }
 
       await getFirebaseFirestore()
           .collection('${config.roomsCollectionName}/$roomId/messages')
