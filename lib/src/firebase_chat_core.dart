@@ -364,6 +364,7 @@ class FirebaseChatCore {
       messageMap['authorId'] = currentUserId;
       messageMap['createdAt'] = FieldValue.serverTimestamp();
       messageMap['updatedAt'] = FieldValue.serverTimestamp();
+      messageMap['emphasized'] = true;
 
       if (repliedMessage != null) {
         // final textMessage = repliedMessage as types.TextMessage;
