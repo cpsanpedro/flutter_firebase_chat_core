@@ -326,6 +326,7 @@ class FirebaseChatCore {
   /// does nothing.
   void sendMessage(
     String currentUserId,
+    String userName,
     dynamic partialMessage,
     String roomId, {
     types.Message? repliedMessage,
@@ -364,6 +365,7 @@ class FirebaseChatCore {
       messageMap['authorId'] = currentUserId;
       messageMap['createdAt'] = FieldValue.serverTimestamp();
       messageMap['updatedAt'] = FieldValue.serverTimestamp();
+      messageMap['metadata'] = {'userName': userName};
       messageMap['emphasized'] = true;
 
       if (repliedMessage != null) {
