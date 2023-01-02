@@ -357,6 +357,12 @@ class FirebaseChatCore {
         id: '',
         partialText: partialMessage,
       );
+    } else if (partialMessage is types.PartialAudio) {
+      message = types.AudioMessage.fromPartial(
+        author: types.User(id: currentUserId),
+        id: '',
+        partialAudio: partialMessage,
+      );
     }
 
     if (message != null) {
