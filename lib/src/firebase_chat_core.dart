@@ -338,36 +338,42 @@ class FirebaseChatCore {
         author: types.User(id: currentUserId),
         id: '',
         partialCustom: partialMessage,
+        status: types.Status.delivered,
       );
     } else if (partialMessage is types.PartialFile) {
       message = types.FileMessage.fromPartial(
         author: types.User(id: currentUserId),
         id: '',
         partialFile: partialMessage,
+        status: types.Status.delivered,
       );
     } else if (partialMessage is types.PartialImage) {
       message = types.ImageMessage.fromPartial(
         author: types.User(id: currentUserId),
         id: '',
         partialImage: partialMessage,
+        status: types.Status.delivered,
       );
     } else if (partialMessage is types.PartialText) {
       message = types.TextMessage.fromPartial(
         author: types.User(id: currentUserId),
         id: '',
         partialText: partialMessage,
+        status: types.Status.delivered,
       );
     } else if (partialMessage is types.PartialAudio) {
       message = types.AudioMessage.fromPartial(
         author: types.User(id: currentUserId),
         id: '',
         partialAudio: partialMessage,
+        status: types.Status.delivered,
       );
     } else if (partialMessage is types.PartialVideo) {
       message = types.VideoMessage.fromPartial(
         author: types.User(id: currentUserId),
         id: '',
         partialVideo: partialMessage,
+        status: types.Status.delivered,
       );
     }
 
