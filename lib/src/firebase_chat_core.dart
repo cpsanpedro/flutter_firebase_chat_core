@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -391,6 +392,10 @@ class FirebaseChatCore {
         messageMap['repliedMessage'] = repliedMessage.toJson();
       }
 
+      if ((await Connectivity().checkConnectivity()) ==
+          ConnectivityResult.none) {
+        messageMap['status'] = 'error';
+      }
       await getFirebaseFirestore()
           .collection('${config.roomsCollectionName}/$roomId/messages')
           .add(messageMap);
