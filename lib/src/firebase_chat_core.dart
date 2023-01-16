@@ -180,7 +180,10 @@ class FirebaseChatCore {
 
   /// Creates [types.User] in Firebase to store name and avatar used on
   /// rooms list
-  Future<void> createUserInFirestore(types.User user) async {
+  Future<void> createUserInFirestore(
+    types.User user, {
+    String? userName,
+  }) async {
     await getFirebaseFirestore()
         .collection(config.usersCollectionName)
         .doc(user.id)
@@ -193,6 +196,7 @@ class FirebaseChatCore {
       'metadata': user.metadata,
       'role': user.role?.toShortString(),
       'updatedAt': FieldValue.serverTimestamp(),
+      if (userName != null) 'userName': userName,
     });
   }
 
