@@ -183,6 +183,7 @@ class FirebaseChatCore {
   Future<void> createUserInFirestore(
     types.User user, {
     String? userName,
+    String? number,
   }) async {
     await getFirebaseFirestore()
         .collection(config.usersCollectionName)
@@ -197,6 +198,7 @@ class FirebaseChatCore {
       'role': user.role?.toShortString(),
       'updatedAt': FieldValue.serverTimestamp(),
       if (userName != null) 'userName': userName,
+      if (number != null) 'number': number,
     });
   }
 
