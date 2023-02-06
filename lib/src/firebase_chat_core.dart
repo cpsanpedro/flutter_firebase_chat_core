@@ -392,6 +392,7 @@ class FirebaseChatCore {
       messageMap['updatedAt'] = FieldValue.serverTimestamp();
       messageMap['metadata'] = {'userName': userName};
       messageMap['emphasized'] = true;
+      messageMap['groupSeenById'] = [];
 
       if (repliedMessage != null) {
         // final textMessage = repliedMessage as types.TextMessage;
