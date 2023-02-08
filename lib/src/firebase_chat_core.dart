@@ -313,10 +313,12 @@ class FirebaseChatCore {
         ? getFirebaseFirestore()
             .collection(config.roomsCollectionName)
             .where('userIds', arrayContains: currentUserId)
+            .orderBy('metadata.pinnedDate', descending: true)
             .orderBy('updatedAt', descending: true)
         : getFirebaseFirestore()
             .collection(config.roomsCollectionName)
-            .where('userIds', arrayContains: currentUserId);
+            .where('userIds', arrayContains: currentUserId)
+            .orderBy('pinnedDate', descending: true);
 
     return collection.snapshots().asyncMap(
           (query) => processRoomsQuery(
@@ -393,6 +395,7 @@ class FirebaseChatCore {
       messageMap['metadata'] = {'userName': userName};
       messageMap['emphasized'] = true;
       messageMap['groupSeenById'] = [];
+      messageMap['metadata'] = {'pinnedDate' : null};
 
       if (repliedMessage != null) {
         // final textMessage = repliedMessage as types.TextMessage;
