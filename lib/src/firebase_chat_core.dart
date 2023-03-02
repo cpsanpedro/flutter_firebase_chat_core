@@ -313,6 +313,7 @@ class FirebaseChatCore {
         ? getFirebaseFirestore()
             .collection(config.roomsCollectionName)
             .where('userIds', arrayContains: currentUserId)
+            .orderBy('metadata.unRead', descending: true)
             .orderBy('metadata.pinnedDate', descending: true)
             .orderBy('updatedAt', descending: true)
         : getFirebaseFirestore()
@@ -393,7 +394,6 @@ class FirebaseChatCore {
       messageMap['createdAt'] = FieldValue.serverTimestamp();
       messageMap['updatedAt'] = FieldValue.serverTimestamp();
       messageMap['metadata'] = {'userName': userName, 'pinnedDate': null};
-      messageMap['emphasized'] = true;
       messageMap['groupSeenById'] = [];
 
       if (repliedMessage != null) {
@@ -413,6 +413,11 @@ class FirebaseChatCore {
           .collection(config.roomsCollectionName)
           .doc(roomId)
           .update({'updatedAt': FieldValue.serverTimestamp()});
+
+      await getFirebaseFirestore()
+          .collection(config.roomsCollectionName)
+          .doc(roomId)
+          .update({'metadata.unRead': true});
     }
   }
 
