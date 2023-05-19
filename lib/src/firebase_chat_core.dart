@@ -306,20 +306,12 @@ class FirebaseChatCore {
   /// is `rooms`, field indexed are `userIds` (type Arrays) and `updatedAt`
   /// (type Descending), query scope is `Collection`
   Stream<List<types.Room>> rooms(
-    String currentUserId, {
-    bool orderByUpdatedAt = false,
-  }) {
-    final collection = orderByUpdatedAt
-        ? getFirebaseFirestore()
-            .collection(config.roomsCollectionName)
-            .where('userIds', arrayContains: currentUserId)
-            .orderBy('metadata.unRead', descending: true)
-            .orderBy('metadata.pinnedDate', descending: true)
-            .orderBy('updatedAt', descending: true)
-        : getFirebaseFirestore()
-            .collection(config.roomsCollectionName)
-            .where('userIds', arrayContains: currentUserId)
-            .orderBy('pinnedDate', descending: true);
+    String currentUserId,
+  ) {
+    final collection = getFirebaseFirestore()
+        .collection(config.roomsCollectionName)
+        .where('userIds', arrayContains: currentUserId)
+        .orderBy('updatedAt', descending: true);
 
     return collection.snapshots().asyncMap(
           (query) => processRoomsQuery(
@@ -418,6 +410,11 @@ class FirebaseChatCore {
           .collection(config.roomsCollectionName)
           .doc(roomId)
           .update({'metadata.unRead': true});
+
+      await getFirebaseFirestore()
+          .collection(config.roomsCollectionName)
+          .doc(roomId)
+          .update({'metadata.senderId': currentUserId});
     }
   }
 
