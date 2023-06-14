@@ -415,6 +415,11 @@ class FirebaseChatCore {
           .collection(config.roomsCollectionName)
           .doc(roomId)
           .update({'metadata.senderId': currentUserId});
+
+      await getFirebaseFirestore()
+          .collection(config.roomsCollectionName)
+          .doc(roomId)
+          .update({'metadata.deletedByUserId': FieldValue.delete()});
     }
   }
 
