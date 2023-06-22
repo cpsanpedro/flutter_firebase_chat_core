@@ -100,6 +100,7 @@ class FirebaseChatCore {
   Future<types.Room> createRoom(
     String currentUserId,
     types.User otherUser, {
+    bool temporary = false,
     Map<String, dynamic>? metadata,
   }) async {
     // Sort two user ids array to always have the same array for both users,
@@ -156,26 +157,36 @@ class FirebaseChatCore {
 
     final users = [types.User.fromJson(currentUser), otherUser];
 
-    // Create new room with sorted user ids array.
-    final room = await getFirebaseFirestore()
-        .collection(config.roomsCollectionName)
-        .add({
-      'createdAt': FieldValue.serverTimestamp(),
-      'imageUrl': null,
-      'metadata': metadata,
-      'name': null,
-      'type': types.RoomType.direct.toShortString(),
-      'updatedAt': FieldValue.serverTimestamp(),
-      'userIds': userIds,
-      'userRoles': null,
-    });
+    if (!temporary) {
+      // Create new room with sorted user ids array.
+      final room = await getFirebaseFirestore()
+          .collection(config.roomsCollectionName)
+          .add({
+        'createdAt': FieldValue.serverTimestamp(),
+        'imageUrl': null,
+        'metadata': metadata,
+        'name': null,
+        'type': types.RoomType.direct.toShortString(),
+        'updatedAt': FieldValue.serverTimestamp(),
+        'userIds': userIds,
+        'userRoles': null,
+      });
 
-    return types.Room(
-      id: room.id,
-      metadata: metadata,
-      type: types.RoomType.direct,
-      users: users,
-    );
+      return types.Room(
+        id: room.id,
+        metadata: metadata,
+        type: types.RoomType.direct,
+        users: users,
+      );
+    } else {
+      //don't create room yet
+      return types.Room(
+        id: 'temporary',
+        metadata: metadata,
+        type: types.RoomType.direct,
+        users: users,
+      );
+    }
   }
 
   /// Creates [types.User] in Firebase to store name and avatar used on
