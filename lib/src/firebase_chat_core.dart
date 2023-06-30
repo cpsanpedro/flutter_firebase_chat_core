@@ -239,7 +239,8 @@ class FirebaseChatCore {
 
   /// Returns a stream of messages from Firebase for a given room.
   Stream<List<types.Message>> messages(
-    types.Room room, {
+    types.Room room,
+    String currentUserId, {
     List<Object?>? endAt,
     List<Object?>? endBefore,
     int? limit,
@@ -268,6 +269,16 @@ class FirebaseChatCore {
 
     if (startAt != null) {
       query = query.startAt(startAt);
+    }
+
+    final deletedInfo = room.metadata?['deletedInfo'];
+    if (deletedInfo != null) {
+      if (currentUserId == deletedInfo?['userId']) {
+        query = query.where(
+          'createdAt',
+          isGreaterThan: deletedInfo?['deletedDate'],
+        );
+      }
     }
 
     return query.snapshots().map(
